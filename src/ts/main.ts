@@ -40,7 +40,7 @@ function createWindow() {
 	stContext.getVariable("initialize")
 			.expect(STBlock)
 			.evaluateWith([], [
-				{label: "mainWindow", value: new STJSObject(mainWindow)},
+				{label: "mainWindow", value: new STJSObject(stContext, mainWindow)},
 				{label: "appPath", value: new STString(path.join(__dirname, "../"))}
 			]);
 
