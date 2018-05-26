@@ -15,5 +15,5 @@ createBrowserWindow := [
 
 initializeWindow := [:mainWindow |
 	">> Open the DevTools".
-	(mainWindow subscriptGet:"webContents") openDevTools.
+	(mainWindow getProperty:"webContents") openDevTools.
 ].

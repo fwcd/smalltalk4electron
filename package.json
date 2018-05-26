@@ -19,8 +19,8 @@
 	"author": "fwcd",
 	"license": "CC0-1.0",
 	"devDependencies": {
-		"smallballoon": "^1.0.6",
-		"electron": "^1.8.4",
+		"smallballoon": "^1.0.8",
+		"electron": "^2.0.2",
 		"typescript": "^2.6.2"
 	}
 }
