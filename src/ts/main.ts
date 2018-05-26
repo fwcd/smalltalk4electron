@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from "electron";
-import { STLoader, STContext, AbstractSyntaxTree, STBlock, STJSObject, LOG, LogLevel } from "smallballoon";
+import { STLoader, STContext, AbstractSyntaxTree, STBlock, STJSObject, LOG, LogLevel, STString } from "smallballoon";
 import * as path from "path";
 import * as url from "url";
 
@@ -25,10 +25,10 @@ function createWindow() {
 
 	LOG.debug("Creating browser window through Smalltalk...");
 	mainWindow = stContext.getVariable("createBrowserWindow")
-		.expect(STBlock)
-		.evaluate()
-		.expect(STJSObject)
-		.getObject();
+			.expect(STBlock)
+			.evaluate()
+			.expect(STJSObject)
+			.getObject();
 
 	LOG.debug("Loading index.html");
 	mainWindow.loadURL(url.format({
@@ -37,12 +37,12 @@ function createWindow() {
 		slashes: true,
 	}));
 
-	stContext.getVariable("initializeWindow")
-		.expect(STBlock)
-		.evaluateWith([], [{
-			label: "mainWindow",
-			value: new STJSObject(mainWindow)
-		}]);
+	stContext.getVariable("initialize")
+			.expect(STBlock)
+			.evaluateWith([], [
+				{label: "mainWindow", value: new STJSObject(mainWindow)},
+				{label: "appPath", value: new STString(path.join(__dirname, "../"))}
+			]);
 
 	// Emitted when the window is closed.
 	mainWindow.on("closed", () => {
