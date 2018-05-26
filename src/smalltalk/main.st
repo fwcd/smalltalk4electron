@@ -1,5 +1,7 @@
 url := JS get:"require('url')".
 path := JS get:"require('path')".
+electron := JS get:"require('electron')".
+app := electron getProperty:"app".
 
 createBrowserWindow := [
 	| width height |
