@@ -1,15 +1,17 @@
 url := JS get:"require('url')".
 path := JS get:"require('path')".
 electron := JS get:"require('electron')".
-app := electron getProperty:"app".
 LOG := JS get:"require('smallballoon').LOG".
+
+app := electron getProperty:"app".
+mainWindow := nil.
 
 createBrowserWindow := [
 	| width height |
 	width := 800.
 	height := 600.
 
-	">> Create the browser window".
+	LOG debug:"Creating browser window".
 	JS get:(((("
 		const {BrowserWindow} = require('electron');
 		new BrowserWindow({
@@ -19,8 +21,9 @@ createBrowserWindow := [
 	).
 ].
 
-initialize := [:mainWindow :appPath |
+initialize := [
 	| mainHTML rawPath rawURL |
+	LOG debug:"Initializing browser window".
 	mainHTML := "index.html".
 
 	rawPath := path join:appPath and:mainHTML.
@@ -36,10 +39,24 @@ initialize := [:mainWindow :appPath |
 	(mainWindow getProperty:"webContents") openDevTools.
 ].
 
+createWindow := [
+	mainWindow := createBrowserWindow value.
+	initialize value.
+
+	"Emitted when the window is closed.".
+	mainWindow on:"closed" do:[
+		"Dereference the window object, usually you would store windows
+		in an array if your app supports multi windows, this is the time
+		when you should delete the corresponding element.".
+		mainWindow := nil.
+	].
+].
+
 app on:"ready" do:[
 	"This method will be called when Electron has finished
 	initialization and is ready to create browser windows.
 	Some APIs can only be used after this event occurs.".
+	createWindow value.
 	LOG debug:"Application is ready".
 ].
 
@@ -51,5 +68,13 @@ app on:"window-all-closed" do:[
 	((JS eval:"process.platform") equals:"darwin") ifFalse:[
 		LOG debug:"Quitting application".
 		app quit.
+	].
+].
+
+app on:"activate" do:[
+	"On OS X it is common to re-create a window in the app when the
+	dock icon is clicked and there are no other windows open.".
+	(mainWindow isNil) ifTrue:[
+		createWindow value.
 	].
 ].
