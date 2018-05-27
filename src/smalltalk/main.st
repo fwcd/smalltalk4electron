@@ -45,9 +45,11 @@ app on:"ready" do:[
 
 "Quit when all windows are closed.".
 app on:"window-all-closed" do:[
+	LOG debug:"Closed all windows".
 	"On OS X it is common for applications and their menu bar
 	to stay active until the user quits explicitly with Cmd + Q.".
 	((JS eval:"process.platform") equals:"darwin") ifFalse:[
+		LOG debug:"Quitting application".
 		app quit.
 	].
 ].
