@@ -30,13 +30,6 @@ function createWindow() {
 			.expect(STJSObject)
 			.getObject();
 
-	LOG.debug("Loading index.html");
-	mainWindow.loadURL(url.format({
-		pathname: path.join(__dirname, "../index.html"),
-		protocol: "file:",
-		slashes: true,
-	}));
-
 	stContext.getVariable("initialize")
 			.expect(STBlock)
 			.evaluateWith([], [
