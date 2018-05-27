@@ -1,13 +1,21 @@
-import { app, BrowserWindow } from "electron";
-import { STLoader, STContext, AbstractSyntaxTree, STBlock, STJSObject, LOG, LogLevel, STString } from "smallballoon";
+import { BrowserWindow, app } from "electron";
 import * as path from "path";
-import * as url from "url";
+import { LOG, LogLevel, STBlock, STContext, STJSObject, STLoader, STMessageParameter, STObject, STString } from "smallballoon";
 
 let mainWindow: Electron.BrowserWindow;
 let stLoader = new STLoader();
 let stContext = STContext.create();
 
 LOG.level = LogLevel.Info;
+
+LOG.debug("Loading Smalltalk application...");
+let stApp = stLoader.createASTFromFile("src/smalltalk/main.st");
+LOG.debug("Running Smalltalk application...");
+stApp.runWith(stContext);
+
+function callSmalltalk(name: string, ...args: STMessageParameter[]): STObject {
+	return stContext.getVariable(name).expect(STBlock).evaluateWith([], args);
+}
 
 function instantiateWindow(width: number, height: number): Electron.BrowserWindow {
 	return new BrowserWindow({
@@ -17,25 +25,14 @@ function instantiateWindow(width: number, height: number): Electron.BrowserWindo
 }
 
 function createWindow() {
-	LOG.debug("Loading Smalltalk application...");
-	let stApp = stLoader.createASTFromFile("src/smalltalk/main.st");
-
-	LOG.debug("Running Smalltalk application...");
-	stApp.runWith(stContext);
-
 	LOG.debug("Creating browser window through Smalltalk...");
-	mainWindow = stContext.getVariable("createBrowserWindow")
-			.expect(STBlock)
-			.evaluate()
-			.expect(STJSObject)
-			.getObject();
+	mainWindow = callSmalltalk("createBrowserWindow").expect(STJSObject).getObject();
 
-	stContext.getVariable("initialize")
-			.expect(STBlock)
-			.evaluateWith([], [
-				{label: "mainWindow", value: new STJSObject(stContext, mainWindow)},
-				{label: "appPath", value: new STString(path.join(__dirname, "../"))}
-			]);
+	LOG.debug("Initializing browser window through Smalltalk...");
+	callSmalltalk("initialize",
+		{label: "mainWindow", value: new STJSObject(stContext, mainWindow)},
+		{label: "appPath", value: new STString(path.join(__dirname, "../"))}
+	);
 
 	// Emitted when the window is closed.
 	mainWindow.on("closed", () => {
