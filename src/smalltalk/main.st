@@ -32,10 +32,10 @@ initialize := [
 	rawURL setProperty:"protocol" to:"file:".
 	rawURL setProperty:"slashes" to:true.
 
-	">> Load web page".
+	LOG debug:"Loading web page".
 	mainWindow loadURL:(url format:rawURL).
 
-	">> Open the DevTools".
+	LOG debug:"Opening the DevTools".
 	(mainWindow getProperty:"webContents") openDevTools.
 ].
 
