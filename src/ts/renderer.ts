@@ -1,3 +1,7 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
+import * as path from "path";
+import { STContext, STString, LOG, STLoader, LogLevel } from "smallballoon/build/main/ts";
+
+let stContext = STContext.create();
+stContext.setVariableLocally("appPath", new STString(path.join(__dirname, "../")));
+let stApp = new STLoader().createASTFromFile("src/smalltalk/renderer.st");
+stApp.runWith(stContext);
