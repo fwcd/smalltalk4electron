@@ -2,6 +2,7 @@ url := JS get:"require('url')".
 path := JS get:"require('path')".
 electron := JS get:"require('electron')".
 app := electron getProperty:"app".
+LOG := JS get:"require('smallballoon').LOG".
 
 createBrowserWindow := [
 	| width height |
@@ -39,6 +40,7 @@ app on:"ready" do:[
 	"This method will be called when Electron has finished
 	initialization and is ready to create browser windows.
 	Some APIs can only be used after this event occurs.".
+	LOG debug:"Application is ready".
 ].
 
 "Quit when all windows are closed.".

@@ -6,7 +6,7 @@ let mainWindow: Electron.BrowserWindow;
 let stLoader = new STLoader();
 let stContext = STContext.create();
 
-LOG.level = LogLevel.Info;
+LOG.level = LogLevel.Debug;
 
 LOG.debug("Loading Smalltalk application...");
 let stApp = stLoader.createASTFromFile("src/smalltalk/main.st");
@@ -42,7 +42,6 @@ function createWindow() {
 		mainWindow = null;
 	});
 }
-
 
 app.on("ready", createWindow);
 app.on("activate", () => {
