@@ -8,16 +8,12 @@
 			"type": "node",
 			"request": "launch",
 			"name": "Launch Program",
-			"program": "${workspaceFolder}\\dist\\main.js",
-			"preLaunchTask": "tsc: build - tsconfig.json",
+			"program": "${workspaceFolder}\\src\\js\\main.js",
 			"runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
 			"windows": {
 				"runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
 			},
-			"args" : ["."],
-			"outFiles": [
-				"${workspaceFolder}/dist/**/*.js"
-			]
+			"args" : ["."]
 		}
 	]
 }
