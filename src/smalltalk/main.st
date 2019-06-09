@@ -16,7 +16,10 @@ createBrowserWindow := [
 		const {BrowserWindow} = require('electron');
 		new BrowserWindow({
 			height: " and:height) and:",
-			width: ") and:width) and:"
+			width: ") and:width) and:",
+			webPreferences: {
+				nodeIntegration: true
+			}
 		});"
 	).
 ].

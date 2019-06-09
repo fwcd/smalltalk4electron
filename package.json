@@ -5,7 +5,8 @@
 	"scripts": {
 		"build": "tsc",
 		"watch": "tsc -w",
-		"start": "npm run build && electron ./dist/main.js"
+		"launch": "electron ./dist/main.js",
+		"start": "npm run build && npm run launch"
 	},
 	"repository": "https://github.com/fwcd/Smalltalk4Electron",
 	"keywords": [
@@ -19,8 +20,11 @@
 	"author": "fwcd",
 	"license": "CC0-1.0",
 	"devDependencies": {
+		"@types/node": "^12.0.7",
 		"electron": "^5.0.3",
-		"smallballoon": "^1.0.19",
-		"typescript": "^2.6.2"
+		"typescript": "^3.5.1"
+	},
+	"dependencies": {
+		"smallballoon": "^1.0.19"
 	}
 }
